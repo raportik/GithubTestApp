@@ -8,10 +8,10 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Proje dosyasını doğru klasöre kopyalıyoruz
-COPY ["GithubTestApp/GithubTestApp.csproj", "GithubTestApp/"]
+COPY GithubTestApp/GithubTestApp.csproj ./GithubTestApp/
 
 # Bağımlılıkları geri yüklüyoruz
-RUN dotnet restore "GithubTestApp/GithubTestApp.csproj"
+RUN dotnet restore "./GithubTestApp/GithubTestApp.csproj"
 
 # Tüm proje dosyalarını kopyalıyoruz
 COPY . .
