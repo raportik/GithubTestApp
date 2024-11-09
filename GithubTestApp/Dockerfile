@@ -7,17 +7,12 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Proje dosyasını doğru klasöre kopyalıyoruz
-COPY GithubTestApp/GithubTestApp.csproj ./GithubTestApp/
-
-# Bağımlılıkları geri yüklüyoruz
-RUN dotnet restore "./GithubTestApp/GithubTestApp.csproj"
-
-# Tüm proje dosyalarını kopyalıyoruz
+# Tüm dosyaları kopyalayıp bağımlılıkları geri yüklüyoruz
 COPY . .
+WORKDIR "/src/GithubTestApp"
+RUN dotnet restore "GithubTestApp.csproj"
 
 # Projeyi derliyoruz
-WORKDIR "/src/GithubTestApp"
 RUN dotnet build "GithubTestApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # 3. Aşama: Yayın için gerekli dosyaları oluşturuyoruz
