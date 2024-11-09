@@ -7,12 +7,12 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Sadece .csproj dosyasını önce kopyalayarak restore işlemini yapıyoruz
-COPY GithubTestApp/GithubTestApp.csproj ./GithubTestApp/
+# Sadece .csproj dosyasını kopyalıyoruz
+COPY ./GithubTestApp/GithubTestApp.csproj ./GithubTestApp/
 RUN dotnet restore "GithubTestApp/GithubTestApp.csproj"
 
 # Tüm dosyaları kopyalayıp projeyi derliyoruz
-COPY . .
+COPY ./GithubTestApp ./GithubTestApp
 WORKDIR "/src/GithubTestApp"
 RUN dotnet build "GithubTestApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
