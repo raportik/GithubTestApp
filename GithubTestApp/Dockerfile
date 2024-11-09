@@ -5,15 +5,15 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["GithubTestApp/GithubTestApp.csproj", "GithubTestApp/"]
-RUN dotnet restore "./GithubTestApp/GithubTestApp.csproj"
+COPY ["GithubTestApp.csproj", "."]
+RUN dotnet restore "GithubTestApp/GithubTestApp.csproj"
 COPY . .
 WORKDIR "/src/GithubTestApp"
-RUN dotnet build "./GithubTestApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "GithubTestApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./GithubTestApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "GithubTestApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
