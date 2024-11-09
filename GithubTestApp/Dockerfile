@@ -8,12 +8,11 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Sadece .csproj dosyasını kopyalıyoruz
-COPY ./GithubTestApp/GithubTestApp.csproj ./GithubTestApp/
-RUN dotnet restore "GithubTestApp/GithubTestApp.csproj"
+COPY GithubTestApp.csproj .
+RUN dotnet restore "GithubTestApp.csproj"
 
 # Tüm dosyaları kopyalayıp projeyi derliyoruz
-COPY ./GithubTestApp ./GithubTestApp
-WORKDIR "/src/GithubTestApp"
+COPY . .
 RUN dotnet build "GithubTestApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # 3. Aşama: Yayın için gerekli dosyaları oluşturuyoruz
