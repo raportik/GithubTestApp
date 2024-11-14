@@ -25,5 +25,13 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+# Nginx'i kuruyoruz
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    rm -rf /var/lib/apt/lists/*
+
+# Nginx yapılandırma dosyasını kopyalıyoruz
+COPY nginx.conf /etc/nginx/nginx.conf
+
 # Uygulamayı başlatıyoruz
 ENTRYPOINT ["dotnet", "GithubTestApp.dll"]

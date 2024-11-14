@@ -1,10 +1,18 @@
 ﻿@page
-@model IndexModel
+@model GithubTestApp.Pages.IndexModel
+
 @{
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Hoş geldiniz.</h1>
-    <p>Bu bir test projesidir. Lütfen dikkate almayınız.</p>
-</div>
+<h1>Todo Listesi</h1>
+
+<a asp-page="./Create">Yeni Todo Ekle</a>
+<ul>
+    @foreach (var todo in Model.TodoList)
+    {
+        <li>
+            <strong>@todo.Title</strong> - Tamamlandı mı: @todo.IsCompleted
+        </li>
+    }
+</ul>

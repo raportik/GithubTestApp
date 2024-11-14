@@ -1,0 +1,20 @@
+﻿@page
+@model GithubTestApp.Pages.CreateModel
+
+@{
+}
+
+<h1>Yeni Todo Ekle</h1>
+
+<form method="post">
+    <div>
+        <label>Başlık</label>
+        <input asp-for="Todo.Title" />
+        <span asp-validation-for="Todo.Title" class="text-danger"></span>
+    </div>
+    <div>
+        <label>Tamamlandı mı?</label>
+        <input asp-for="Todo.IsCompleted" type="checkbox" />
+    </div>
+    <button type="submit">Ekle</button>
+</form>
