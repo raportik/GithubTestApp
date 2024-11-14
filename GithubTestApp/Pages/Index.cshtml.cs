@@ -22,4 +22,14 @@ namespace GithubTestApp.Pages
             TodoList = await _context.ToDos.ToListAsync();
         }
     }
+
+    public class BackgorundService
+    {
+        public static void Test()
+        {
+            TodoContext context = new TodoContext();
+
+            context.Add(new ToDo { Title = DateTime.Now.ToLongTimeString(), IsCompleted = true });
+        }
+    }
 }

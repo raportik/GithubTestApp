@@ -1,4 +1,7 @@
 using GithubTestApp.Models;
+using GithubTestApp.Pages;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +10,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 //builder.WebHost.UseUrls("http://*:1313");
 builder.Services.AddDbContext<TodoContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHangfire(configuration =>
+    configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                 .UseSimpleAssemblyNameTypeSerializer()
+                 .UseRecommendedSerializerSettings()
+                 .UsePostgreSqlStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new PostgreSqlStorageOptions
+                 {
+                     InvisibilityTimeout = TimeSpan.FromMinutes(5),
+                     QueuePollInterval = TimeSpan.FromSeconds(15),
+                     DistributedLockTimeout = TimeSpan.FromMinutes(10)
+                 }));
+
+builder.Services.AddHangfireServer();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,6 +38,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseHangfireDashboard();
+
+RecurringJob.AddOrUpdate("midnightJob", () => BackgorundService.Test() , Cron.Daily(23, 30)); // Her gün gece 00:00
 
 app.UseAuthorization();
 

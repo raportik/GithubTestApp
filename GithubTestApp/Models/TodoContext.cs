@@ -11,6 +11,11 @@ namespace GithubTestApp.Models
             _configuration = configuration;
         }
 
+        public TodoContext()
+        {
+            
+        }
+
         public DbSet<ToDo> ToDos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
